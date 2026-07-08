@@ -32,8 +32,9 @@ shows *trajectory* or *time-to-compact*.
 - **Binding-limit highlight** — when both 5h and weekly are shown, emphasise
   whichever is the tighter ceiling.
 - **Cost burn rate** — `$1.34 ($6/hr)` from `total_cost_usd / total_duration_ms`.
-- **Absolute tokens free** — already partly landed; surface `Nk` remaining from
-  `context_window_size − total_input_tokens`.
+- **Absolute tokens free** — optionally surface `Nk` remaining from
+  `context_window_size − total_input_tokens`. Dropped from the default render as
+  redundant with the `ctx:%` figure; revisit only if the raw count earns its width.
 - **Session name / worktree** — `session_name` and `workspace.git_worktree` when
   present; silent otherwise. Payoff for multi-session, multi-worktree work.
 

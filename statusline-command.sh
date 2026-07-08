@@ -74,17 +74,10 @@ process.stdin.on("end",()=>{
   };
 
   // context: percentage is already relative to the real window size, so it
-  // reads correctly on 200k and 1M models. Show remaining tokens from the
-  // actual context_window_size rather than assuming 200k.
+  // reads correctly on 200k and 1M models.
   const cxw=p?.context_window||{};
   const ctx=Math.floor(cxw.used_percentage||0);
-  let ctxSeg=c("ctx:"+ctx+"%",ccol(ctx))+bar(ctx,null,6);
-  const size=cxw.context_window_size||0, used=cxw.total_input_tokens||0;
-  if(size){
-    const freeK=Math.max(0,Math.round((size-used)/1000));
-    ctxSeg+=c(" "+freeK+"k",ccol(ctx));
-  }
-  parts.push(ctxSeg);
+  parts.push(c("ctx:"+ctx+"%",ccol(ctx))+bar(ctx,null,6));
 
   // 200k overflow flag (fixed threshold, meaningful waypoint on 1M models)
   if(p?.exceeds_200k_tokens) parts.push(c("⚠200k","0;31"));

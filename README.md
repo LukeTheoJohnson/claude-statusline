@@ -19,7 +19,7 @@ A single-file status line for Claude CLI using the JSON pipes to stdin. No depen
 | `E:high` | Reasoning effort level. |
 | `+120/-34` | Lines added / removed this session (keep grounded with code changes). |
 | `$0.42` | Session cost in USD (estimated based on api pricing). |
-| `ctx:38%░░ 124k` | Context-window usage + mini bar, then tokens free (from the real `context_window_size`, so it reads right on 200k and 1M models). Green under 15%, amber under 50%, red beyond. |
+| `ctx:38%░░` | Context-window usage + mini bar (percentage is relative to the real `context_window_size`, so it reads right on 200k and 1M models). Green under 15%, amber under 50%, red beyond. |
 | `⚠200k` | Flag when the session exceeds the 200k-token window (Does not adjust). |
 | `5h:61%▓▓│░→2h14m` | Five-hour rate-limit usage, a pacing marker, and time until reset. |
 | `7d:41%▓░│░→2d23h` | Seven-day (weekly) rate-limit usage — often the binding limit on Max plans — pacing marker and reset. |
