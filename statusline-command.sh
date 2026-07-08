@@ -55,8 +55,23 @@ process.stdin.on("end",()=>{
     }
     return s;
   };
-  const tcol=pct=> pct<45?"0;32":pct<70?"0;33":"0;31"; // green/amber/red (rate limits)
+  const tcol=pct=> pct<45?"0;32":pct<70?"0;33":"0;31"; // green/amber/red (rate limits, no pacing)
   const ccol=pct=> pct<15?"0;32":pct<50?"0;33":"0;31"; // context: conservative — amber at 15%, red at 50%
+
+  // burn-aware colour for rate limits: they reset on a rolling clock, so what
+  // matters is usage vs. how far through the window you are (the pacing marker),
+  // not the raw %. Project current burn to the reset — under the pace line lands
+  // with headroom (green), well ahead of it exhausts early (red). Falls back to
+  // raw thresholds when there is no reset time to pace against.
+  const bcol=(pct,pace)=>{
+    if(pace==null) return tcol(pct);            // no pacing info → raw thresholds
+    if(pct<15) return "0;32";                   // negligible usage → green (no early-window noise)
+    if(pct>=90) return "0;31";                  // near the cap: red regardless of pace
+    const proj=pct*100/Math.max(pace,8);        // projected % at reset (clamp early window)
+    if(proj<90)  return pct<80?"0;32":"0;33";   // headroom → green (amber if abs usage high)
+    if(proj<110) return "0;33";                 // lands near the cap → amber
+    return pct<25?"0;33":"0;31";                // projected to blow it → red (amber if abs still low)
+  };
 
   // context: percentage is already relative to the real window size, so it
   // reads correctly on 200k and 1M models. Show remaining tokens from the
@@ -89,7 +104,8 @@ process.stdin.on("end",()=>{
   const limit=(rl,label,win)=>{
     if(!rl||rl.used_percentage==null)return;
     const u=Math.floor(rl.used_percentage);
-    let s=c(label+":"+u+"%",tcol(u))+bar(u,pace(rl.resets_at,win));
+    const pc=pace(rl.resets_at,win);
+    let s=c(label+":"+u+"%",bcol(u,pc))+bar(u,pc);
     const t=rt(rl.resets_at); if(t) s+=c("→"+t,"0;90");
     parts.push(s);
   };
