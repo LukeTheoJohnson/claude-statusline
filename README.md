@@ -8,6 +8,7 @@ A single-file status line for Claude CLI using the JSON pipes to stdin. No depen
 
 - **information is relevant** Segments drop out when they have no value. Each piece of dispalyed info has direct impact on the next prompt. 
 - **No external HUD.** Renders from one payload. Nothing to install
+- **Half a screen, at most.** The line is kept deliberately narrow so it stays fully readable in split-pane terminals — running several panes side by side (Windows Terminal `Ctrl+Shift+D`, tmux splits) shouldn't truncate it. Segments earn their width or drop out; that's why the raw token count went.
 - **Colour coding** the traffic light thresholds on context and rate limits are readable. Main is red to avoid direct commits. 
 
 ## Details
