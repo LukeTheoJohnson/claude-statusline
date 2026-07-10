@@ -4,6 +4,12 @@ The guiding principle: a status line earns its width by turning data into
 **decisions**, not by showing more fields. The pacing marker answers "am I going
 too fast?" instead of printing a number — every item here is held to that bar.
 
+A second rule, learned the hard way: **never replicate what Claude Code already
+shows natively.** The session name lives in the banner above the chat; the PR
+lives in the built-in footer badge (the `pr.*` payload literally "mirrors" it).
+A segment only earns its place by giving persistence the native UI doesn't. See
+*Explicitly not doing*.
+
 Field names below are verified against the
 [Claude Code status line docs](https://code.claude.com/docs/en/statusline).
 
@@ -14,6 +20,10 @@ Field names below are verified against the
 - Actual context window: uses `context_window.context_window_size` and token
   counts, so it reads correctly on 200k **and** 1M-context models.
 - `refreshInterval` documented so time-based segments stay live while idle.
+- Worktree identity (`workspace.git_worktree`): grey `wt:` frame, silent unless
+  you're in a linked worktree. Colour stays reserved for decisions. (PR status
+  and session name were tried and dropped — both duplicate native Claude Code
+  UI; see *Explicitly not doing*.)
 
 ## Tier 1 — headline differentiators
 
@@ -35,8 +45,6 @@ shows *trajectory* or *time-to-compact*.
 - **Absolute tokens free** — optionally surface `Nk` remaining from
   `context_window_size − total_input_tokens`. Dropped from the default render as
   redundant with the `ctx:%` figure; revisit only if the raw count earns its width.
-- **Session name / worktree** — `session_name` and `workspace.git_worktree` when
-  present; silent otherwise. Payoff for multi-session, multi-worktree work.
 
 ## Tier 3 — adoption & robustness
 
@@ -47,6 +55,14 @@ shows *trajectory* or *time-to-compact*.
   instead of a blank bar.
 
 ## Explicitly not doing
+
+**Don't replicate what Claude Code already shows natively** — the statusline
+earns its width on *persistent* signals the built-in UI doesn't keep on screen.
+Casualties of this rule:
+
+- `session_name` — already shown in the banner above the chat.
+- `pr.*` — the docs say the payload "mirrors the PR badge in the bottom status
+  bar," so rendering it here just double-prints the native footer badge.
 
 `vim.mode`, `output_style.name`, `thinking.enabled`, `agent.name` — real fields,
 but clutter that dilutes the signal. Add only on demand.

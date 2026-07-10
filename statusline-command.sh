@@ -28,6 +28,14 @@ process.stdin.on("end",()=>{
     parts.push(c(branch,col));
   }
 
+  // worktree — which linked worktree you are in (silent in the main tree);
+  // grey identity, sits with the branch it belongs to. We deliberately do NOT
+  // render session_name or pr here: Claude Code already shows the session name
+  // (banner above the chat) and the PR (native footer badge the pr.* payload
+  // mirrors). Replicating native UI just wastes width — see ROADMAP.
+  const wt=p?.workspace?.git_worktree;
+  if(wt) parts.push(c("wt:"+wt,"0;90"));
+
   // model.display_name direct
   const model=p?.model?.display_name||"";
   if(model) parts.push(c(model,"0;35"));
