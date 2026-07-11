@@ -28,17 +28,12 @@ Field names below are verified against the
   a Pro/Max subscription — detected by `rate_limits` being present — dollars are
   a phantom pay-go estimate, so they're hidden and the quota segments carry
   "spend" instead.
-- Session quota-burn: `5h:14% +8%` — how much of the 5h window *this* session has
-  eaten, from a `session_id`-keyed baseline cached in tmp; re-baselines on a
-  window reset or rollover. The Max-plan answer to "what did this cost," and not
-  native (`/usage` only shows the window total).
 
 ## Tier 1 — headline differentiators
 
-The `session_id` state cache now exists — session quota-burn keys a 5h baseline
-off `$TMPDIR/cc-sl-$session_id.json`. These extend it to a short `pct,timestamp`
-history, which is where the uniqueness lives: almost no status line shows
-*trajectory* or *time-to-compact*.
+These need a `session_id`-keyed state cache (`$TMPDIR/cc-sl-$session_id.json`)
+holding a short `pct,timestamp` history — which is where the uniqueness lives:
+almost no status line shows *trajectory* or *time-to-compact*.
 
 - **Predictive auto-compact ETA** — `ctx:72% ≈4 msgs`. Project messages until
   compaction from the context growth rate.
@@ -73,8 +68,15 @@ Casualties of this rule:
 
 **Burn rate in dollars** — `total_cost_usd` is a pay-go *estimate*; on a
 subscription (flat fee) it's a phantom, so a `$/hr` figure misleads exactly the
-users who have `rate_limits`. Replaced by session quota-burn, denominated in the
-thing that's actually finite on a plan.
+users who have `rate_limits`. Dropped in favour of the raw quota segments, which
+show the thing that's actually finite on a plan.
+
+**Session quota-burn** (`5h:14% +8%`) — a `session_id`-keyed baseline in tmp
+meant to show how much of the 5h window *this* session had eaten. Shipped, then
+removed: the per-session delta didn't track reliably (the baseline anchors to
+first render, not session start, and drifts across concurrent sessions and
+window rebaselines). The raw `5h:%` segment and `/usage` already carry the
+signal without the false precision.
 
 `vim.mode`, `output_style.name`, `thinking.enabled`, `agent.name` — real fields,
 but clutter that dilutes the signal. Add only on demand.
