@@ -1,6 +1,6 @@
 # claude-statusline
 
-A single-file status line for Claude CLI using the JSON pipes to stdin. No dependencies beyond `bash` and `node`.
+A simple status line for Claude CLI using the JSON pipes to stdin. No dependencies beyond `bash` and `node`.
 
 ![screenshot](assets/statusline.png)
 
