@@ -9,7 +9,7 @@ A simple status line for Claude CLI using the JSON pipes to stdin. It has no dep
 - **information must be relevant** Segments drop out when they have no value. Each piece of displayed info has direct impact on the next prompt. 
 - **No Bloat.** Renders from one payload. Nothing to install
 - **Half screen width.** The line is kept deliberately narrow so it stays readable in split pane terminals. Running several panes side by side (Windows Terminal `Ctrl+Shift+D`, tmux splits) shouldn't truncate it. Segments earn their width or drop out; that's why the raw token count went.
-- **Clear, but as tight as makes sense.** Once a segment earns its place, it's encoded in the fewest characters that stay unambiguous — terse `label:value`, glyphs and arrows over words (`→2h14m`, not "resets in 2h 14m"), colour carrying meaning so no word has to. Density serves clarity; it never costs it.
+- **Minimal explanatory text.** Once a segment earns its place, it's encoded in the fewest characters that stay unambiguous. e.g `label:value`, glyphs and arrows over words (`→2h14m`, not "resets in 2h 14m"), colour carrying meaning so no word has to. Density serves clarity; it never costs it.
 - **Colour coding** the traffic light thresholds on context and rate limits are readable. Main is red to avoid direct commits. 
 
 ## Details
