@@ -6,11 +6,11 @@ A simple and effective status line for Claude CLI. It uses the JSON pipes to std
 
 ## Design notes
 
-- **information must be relevant** Each piece of displayed info has direct impact on the next prompt. 
-- **No extra bloat.** Renders from one payload. Nothing to install
-- **Half screen width considered** The line is kept deliberately short so it stays readable in split pane terminals. Running several panes side by side (Windows Terminal `Ctrl+Shift+D`, tmux splits) shouldn't lose info.
-- **Density->Clarity.** Segments are encoded in the fewest characters that stay unambiguous. e.g `label:value`, glyphs and arrows over words (`→2h14m`, not "resets in 2h 14m"). Text colour carries meaning as well. Density serves clarity
-- **Colour coding** the traffic light thresholds on context and rate limits are readable. Main is red.
+- **information must be relevant:** Each piece of displayed info has direct impact on the next prompt. 
+- **No extra bloat:** Renders from one payload. Nothing to install
+- **Half screen width considered:** The line is kept deliberately short so it stays readable in split pane terminals. Running several panes side by side (Windows Terminal `Ctrl+Shift+D`, tmux splits) shouldn't lose info.
+- **Density->Clarity:** Segments are encoded in the fewest characters that stay unambiguous. e.g `label:value`, glyphs and arrows over words (`→2h14m`, not "resets in 2h 14m").  Density serves clarity
+- **Colour coding:** Text colour carries meaning as well. The traffic light thresholds on context and rate limits are readable. Main branch is red.
 
 ## Details
 
