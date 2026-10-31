@@ -1,16 +1,16 @@
 # claude-statusline
 
-A simple status line for Claude CLI using the JSON pipes to stdin. It has no dependencies beyond `bash` and `node`.
+A simple and effective status line for Claude CLI. It uses the JSON pipes to stdin and has no dependencies beyond `bash` and `node`.
 
 ![screenshot](assets/statusline.png)
 
 ## Design notes
 
-- **information must be relevant** Segments drop out when they have no value. Each piece of displayed info has direct impact on the next prompt. 
-- **No Bloat.** Renders from one payload. Nothing to install
-- **Half screen width.** The line is kept deliberately narrow so it stays readable in split pane terminals. Running several panes side by side (Windows Terminal `Ctrl+Shift+D`, tmux splits) shouldn't truncate it. Segments earn their width or drop out; that's why the raw token count went.
-- **Minimal explanatory text.** Once a segment earns its place, it's encoded in the fewest characters that stay unambiguous. e.g `label:value`, glyphs and arrows over words (`→2h14m`, not "resets in 2h 14m"), colour carrying meaning so no word has to. Density serves clarity; it never costs it.
-- **Colour coding** the traffic light thresholds on context and rate limits are readable. Main is red to avoid direct commits. 
+- **information must be relevant** Each piece of displayed info has direct impact on the next prompt. 
+- **No extra bloat.** Renders from one payload. Nothing to install
+- **Half screen width considered** The line is kept deliberately short so it stays readable in split pane terminals. Running several panes side by side (Windows Terminal `Ctrl+Shift+D`, tmux splits) shouldn't lose info.
+- **Density->Clarity.** Segments are encoded in the fewest characters that stay unambiguous. e.g `label:value`, glyphs and arrows over words (`→2h14m`, not "resets in 2h 14m"). Text colour carries meaning as well. Density serves clarity
+- **Colour coding** the traffic light thresholds on context and rate limits are readable. Main is red.
 
 ## Details
 
@@ -22,7 +22,6 @@ A simple status line for Claude CLI using the JSON pipes to stdin. It has no dep
 | `+120/-34` | Lines added / removed this session (keep grounded with code changes). |
 | `$0.42` | Session cost in USD (estimated based on api pricing). |
 | `ctx:38%░░` | Context-window usage + mini bar (percentage is relative to the real `context_window_size`, so it reads right on 200k and 1M models). Green under 15%, amber under 50%, red beyond. |
-| `⚠200k` | Flag when the session exceeds the 200k-token window (Does not adjust). |
 | `5h:61%▓▓│░→2h14m` | Five-hour rate-limit usage, a pacing marker, and time until reset. |
 | `7d:41%▓░│░→2d23h` | Seven-day (weekly) rate-limit usage — often the binding limit on Max plans — pacing marker and reset. |
 
@@ -48,7 +47,7 @@ A simple status line for Claude CLI using the JSON pipes to stdin. It has no dep
 
    `refreshInterval` (seconds) re-runs the script on a timer as well as on events — without it the reset countdowns freeze while the session sits idle.
 
-3. Restart Claude Code (or start a new session).
+3. Restart Claude Code.
 
 ### Windows
 
@@ -63,10 +62,6 @@ Claude Code runs the command through `bash` (Git Bash / WSL). `~` isn't always e
   }
 }
 ```
-
-## Customising
-
-To change what shows or the order, edit the `parts.push(...)` calls in `statusline-command.sh`. ANSI colour codes are the `"0;3x"` strings passed to `c(...)`.
 
 ## Licence
 
